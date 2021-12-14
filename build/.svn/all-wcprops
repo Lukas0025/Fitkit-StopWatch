@@ -1,0 +1,23 @@
+K 25
+svn:wc:ra_dav:version-url
+V 59
+/svn/FITkit/!svn/ver/360/trunk/apps/demo/keyboard_lcd/build
+END
+kblcd.bin
+K 25
+svn:wc:ra_dav:version-url
+V 69
+/svn/FITkit/!svn/ver/360/trunk/apps/demo/keyboard_lcd/build/kblcd.bin
+END
+kblcd_f1xx.hex
+K 25
+svn:wc:ra_dav:version-url
+V 74
+/svn/FITkit/!svn/ver/360/trunk/apps/demo/keyboard_lcd/build/kblcd_f1xx.hex
+END
+kblcd_f2xx.hex
+K 25
+svn:wc:ra_dav:version-url
+V 74
+/svn/FITkit/!svn/ver/360/trunk/apps/demo/keyboard_lcd/build/kblcd_f2xx.hex
+END
