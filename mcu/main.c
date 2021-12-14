@@ -73,10 +73,10 @@ void print_user_help(void) {
 }
 
 /**
- * @brief Render time on disply
+ * @brief Render time on disply in format mm:ss.ss
  * 
- * @param time 
- * @param prefix 
+ * @param time time to render in fixed point (last 6 bits is under point)
+ * @param prefix prefic char to print before time (0 for not print prefrix)
  */
 void render_time(uint32_t time, char prefix) {
     char str[12];
@@ -95,6 +95,10 @@ void render_time(uint32_t time, char prefix) {
     LCD_write_string(str);
 }
 
+/**
+ * @brief Restart state of stopwatch
+ * 
+ */
 void stopwatch_restart() {
     counting = false;
     
@@ -117,12 +121,13 @@ int keyboard_idle() {
 
     if (ch != 0) {
 
+        //is valid key press? no vibration or etc
         delay_ms(50);
-
         if (key_decode(read_word_keyboard_4x4()) != ch) {
             return 0; // enviroment vibration
         }
 
+        // start/pause action
         if (ch == 'A') {
 
             counting = !counting;
@@ -131,6 +136,7 @@ int keyboard_idle() {
             //render front page
             render_time(timer_sec[page], 0);
 
+        // next page action (Next saved time)
         } else if (ch == 'B') {
 
             if (!counting) {
@@ -144,6 +150,7 @@ int keyboard_idle() {
 
             render_time(timer_sec[page], page_ch);
 
+        // save current time action
         } else if (ch == '*') {
 
             if (counting && !prefix_timer) {
@@ -159,6 +166,7 @@ int keyboard_idle() {
                 }
             }
 
+        //restart action
         } else if (ch == '#') {
             stopwatch_restart();
         }
@@ -173,6 +181,10 @@ int keyboard_idle() {
     return 0;
 }
 
+/**
+ * @brief Init timer set all registers for start send setup timer
+ * 
+ */
 void init_timer() {
     CCTL0 = CCIE;            // enable interupt from timer
     CCR0  = 0x200;           // set how many tiscks for interupt (1/64s)
@@ -180,6 +192,10 @@ void init_timer() {
     TACTL = TASSEL_1 + MC_2; // ACLK (f = 32768 Hz) continuous mode
 }
 
+/**
+ * @brief Iterupt from timer (once per 1/64s)
+ * 
+ */
 interrupt (TIMERA0_VECTOR) Timer_A (void) {
     flip_led_d5();                      //timer heart beep
 
@@ -203,16 +219,21 @@ interrupt (TIMERA0_VECTOR) Timer_A (void) {
     CCR0      += 0x200;                 // set how many tiscks for next interupt (1/64s)
 }
 
-/*******************************************************************************
- * Dekodovani a vykonani uzivatelskych prikazu
-*******************************************************************************/
+/**
+ * @brief Decode command from pc (Unused)
+ * 
+ * @param cmd_ucase 
+ * @param cmd 
+ * @return unsigned char 
+ */
 unsigned char decode_user_cmd(char *cmd_ucase, char *cmd) {
     return CMD_UNKNOWN;
 }
 
-/*******************************************************************************
- * Inicializace periferii/komponent po naprogramovani FPGA
-*******************************************************************************/
+/**
+ * @brief Initialize perifers after pragramed FPGA
+ * 
+ */
 void fpga_initialized() {
     LCD_init();
     LCD_clear();
@@ -221,9 +242,11 @@ void fpga_initialized() {
 }
 
 
-/*******************************************************************************
- * Hlavni funkce
-*******************************************************************************/
+/**
+ * @brief Main function (with main loop)
+ * 
+ * @return int 
+ */
 int main(void) {    
     initialize_hardware();
     keyboard_init();
