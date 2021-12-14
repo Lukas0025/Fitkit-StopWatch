@@ -70,6 +70,16 @@ void print_user_help(void) {
     term_send_crlf();
     term_send_str("Application stopwatch for fitkit");
     term_send_crlf();
+    term_send_crlf();
+    term_send_str("keys:");
+    term_send_crlf();
+    term_send_str("    A    Start/Pause stopwatch");
+    term_send_crlf();
+    term_send_str("    B    Next saved time (in circle mod 10)");
+    term_send_crlf();
+    term_send_str("    #    restart stopwatch");
+    term_send_crlf();
+    term_send_str("    *    save current time is success it disply * else E");
 }
 
 /**
