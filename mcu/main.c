@@ -62,6 +62,7 @@ unsigned i;
 
 #define SHIFT_AMOUNT 6
 #define SHIFT_MASK ((1 << SHIFT_AMOUNT) - 1) 
+#define TIMER_MAX 5999 << SHIFT_AMOUNT | SHIFT_MASK //99*60 + 59 => 99:59.MM
 
 /**
  * @brief Called when help command sended from PC
@@ -208,6 +209,11 @@ void init_timer() {
  */
 interrupt (TIMERA0_VECTOR) Timer_A (void) {
     flip_led_d5();                      //timer heart beep
+
+    if (timer_sec[0] >= TIMER_MAX) {    //Stop counting when time cant be displayd
+        counting = false;
+    }
+
 
     if (!counting) {
         CCR0      += 0x200;             // set how many tiscks for next interupt (1/64s)
