@@ -3,7 +3,7 @@
 * login: xpleva07 AT stud.fit.vutbr.cz
 * project variant: B - LIBOVOLNÝ KIT: Stopky
 
-this is documenation in markdown. Cezech PDF version is in doc.pdf file.
+this is documenation in markdown. Cezech PDF version is in dokumentace.pdf file.
 
 ## Project objectives 
 
