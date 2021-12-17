@@ -62,7 +62,7 @@ unsigned i;
 
 #define SHIFT_AMOUNT 6
 #define SHIFT_MASK ((1 << SHIFT_AMOUNT) - 1) 
-#define TIMER_MAX 5999 << SHIFT_AMOUNT | SHIFT_MASK //99*60 + 59 => 99:59.MM
+#define TIMER_MAX (((uint32_t)5999 << SHIFT_AMOUNT) | SHIFT_MASK) //99*60 + 59 => 99:59.MM
 
 /**
  * @brief Called when help command sended from PC
@@ -243,6 +243,12 @@ interrupt (TIMERA0_VECTOR) Timer_A (void) {
  * @return unsigned char 
  */
 unsigned char decode_user_cmd(char *cmd_ucase, char *cmd) {
+    //Print current time for debug
+    char str[25];
+    sprintf(str, "%u", timer_sec[0]);
+    term_send_str(str);
+    term_send_crlf();
+
     return CMD_UNKNOWN;
 }
 
